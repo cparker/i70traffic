@@ -15,7 +15,7 @@ var restClient = new rest();
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var argv = require('optimist').argv;
-var Q = require('Q');
+var Q = require('q');
 
 var colorLogger = new (winston.Logger)({
     transports: [

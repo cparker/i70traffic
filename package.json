@@ -9,7 +9,7 @@
     "node-rest-client": "^1.4.3",
     "optimist": "^0.6.1",
     "promise": "^6.1.0",
-    "q": "^1.1.2",
+    "q": "~1.1.2",
     "underscore": "^1.7.0",
     "winston": "^0.8.3"
   },
