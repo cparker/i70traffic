@@ -30,13 +30,19 @@ var db;
 var rawTrafficCol;
 var summaryCol;
 
-MongoClient.connect(url, function (err, _db) {
-    assert.equal(null, err);
-    colorLogger.log('debug', 'Connected to mongo');
-    db = _db;
+MongoClient.connect(url, function (err1, _db) {
+    try {
+        assert.equal(null, err1);
+        colorLogger.log('debug', 'Connected to mongo');
+        db = _db;
 
-    rawTrafficCol = db.collection('rawTraffic');
-    summaryCol = db.collection('summary');
+        rawTrafficCol = db.collection('rawTraffic');
+        summaryCol = db.collection('summary');
+    } catch (err2) {
+        colorLogger.log('error', 'Is mongo running?');
+        colorLogger.log('error', 'caught exception attempting to connect to mongo', err1, err2);
+        process.exit(1);
+    }
 });
 
 
@@ -60,6 +66,10 @@ module.exports = (function () {
         getTrafficData()
             .then(function (rawData) {
                 var data = JSON.parse(rawData);
+
+                data.SpeedDetails.Segment = _.filter(data.SpeedDetails.Segment, function (rec) {
+                    return rec.RoadName === 'I-70';
+                });
 
                 colorLogger.log('debug', 'inserting raw record in mongo');
 
